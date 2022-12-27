@@ -15,16 +15,16 @@ if(isset($_POST['submit'])) {
     $content = h($_POST['content']);
 
     $errors = [];
-
+}
     if(trim($name) === '' || trim($name) === "") {
         $errors['name'] = "名前を入力して下さい！";
-    }
+}
     if(trim($title) === '' || trim($title) === " ") {
         $errors['title'] = "タイトルを入力して下さい！";
-    }
+}
     if(trim($content) === '' || trim($content) === "") {
         $errors['content'] = "内容を入力して下さい！";
-    }
+}
     if(count($errors) === 0) {
         
         $_SESSION['kinds'] = $kinds;
@@ -39,8 +39,14 @@ if(isset($_POST['submit'])) {
         echo $errors['name'];
         echo $errors['title'];
         echo $errors['content'];
-    }
 }
+    if(isset($_GET) && $_GET['action'] === 'edit') {
+        $kinds = $_SESSION['kinds'];
+        $name = $_SESSION['name'];
+        $email = $_SESSION['email'];
+        $title = $_SESSION['title'];
+        $content = $_SESSION['content'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -56,21 +62,21 @@ if(isset($_POST['submit'])) {
     <form action="form.php" method="post">
         <div>
             <p>お問い合わせ種別</p>
-            <input type="radio" name="kinds" value="質問"><label>質問</label>
-            <input type="radio" name="kinds" value="依頼"><label>依頼</label>
-            <input type="radio" name="kinds" value="その他"><label>その他</label>
+            <input type="radio" name="kinds" value="質問"<?php if(isset($kinds) && $kinds === "質問"){echo "checked";} else {echo "checked";}?>><label>質問</label>
+            <input type="radio" name="kinds" value="依頼"<?php if(isset($kinds) && $kinds === "依頼"){echo "checked";}?>><label>依頼</label>
+            <input type="radio" name="kinds" value="その他"<?php if(isset($kinds) && $kinds === "その他"){echo "checked";}?>><label>その他</label>
         </div>
         <label for="name" id="name"></label>
-        <input type="text" name="name" value="" placeholder="お名前" required>
+        <input type="text" name="name" value="<?php if(isset($name)){echo $name;} ?>" placeholder="お名前" required>
 
         <label for="email" id="email"></label>
-        <input type="email" name="email" value="" placeholder="メールアドレス" required>
+        <input type="email" name="email" value="<?php if(isset($email)){echo $email;} ?>" placeholder="メールアドレス" required>
 
         <label for="title" id="title"></label>
-        <input type="text" name="title" value="" placeholder="件名" required>
+        <input type="text" name="title" value="<?php if(isset($title)){echo $title;} ?>" placeholder="件名" required>
 
         <label for="content" id="content"></label>
-        <textarea name="content" name="content" rows="7" placeholder="お問い合わせ内容" required></textarea>
+        <textarea name="content" name="content" rows="7" placeholder="お問い合わせ内容" required><?php if(isset($content)){echo $content;} ?></textdarea>
 
         <button type="submit" name="submit" value="確認">確認</button>
     </form>
